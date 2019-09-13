@@ -1,0 +1,52 @@
+Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  FromEmail:
+    Type: String
+    Default: 'your@email.com'
+    Description: (Required) Email to send the receipt from and list as merchant support email. Must be a SES verified email with a minimum of 6 characters.
+  StripeWebhookSecret:
+    Type: String
+    Default: 'whsec_12345'
+    Description: '(Required) The webhook secret '
+  StripeSecretKey:
+    Type: String
+    Default: 'sk_12345'
+    Description: '(Optional) The name of your business to use in the test email template'
+  BrandColor:
+    Type: String
+    Default: '#ed5f74'
+    Description: '(Optional) A brand color to use in the test email template'
+  MerchantLogo: 
+    Type: String
+    Default: 'https://storage.googleapis.com/stripe-sample-images/pasha-favicon.png'
+    Description: '(Optional) A logo to use in the test email template'
+Resources:
+  ReceiptFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs8.10
+      Handler: index.handler
+      CodeUri: ./src
+      Environment:
+        Variables:
+          FROM_EMAIL: !Ref FromEmail
+          MERCHANT_NAME: !Ref MerchantName
+          BRAND_COLOR: !Ref BrandColor
+          BRAND_LOGO: !Ref MerchantLogo
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'ses:SendEmail'
+              Resource: '*'
+        - SESCrudPolicy:
+            IdentityName: !Ref FromEmail
+      # Set up an API Gateway endpoint to trigger this Lambda function.
+      Events:
+        WebhookHandler:
+            # Define an API Gateway endpoint that responds to HTTP POST at /webhook
+            Type: Api
+            Properties:
+                Path: /webhook
+                Method: POST

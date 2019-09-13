@@ -1,0 +1,29 @@
+Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  StripeWebhookSecret:
+    Type: String
+    Default: 'whsec_12345'
+    Description: '(Required) Your Stripe webhook secret '
+  StripeSecretKey:
+    Type: String
+    Default: 'sk_12345'
+    Description: '(Optional) Your Stripe merchant secret key'
+Resources:
+  CreateCustomerFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs8.10
+      Handler: index.handler
+      CodeUri: ./src
+      Environment:
+        Variables:
+          STRIPE_WEBHOOK_SECRET: !Ref StripeWebhookSecret
+          STRIPE_SECRET_KEY: !Ref StripeSecretKey
+      # Set up an API Gateway endpoint to trigger this Lambda function.
+      Events:
+        WebhookHandler:
+            # Define an API Gateway endpoint that responds to HTTP POST at /webhook
+            Type: Api
+            Properties:
+                Path: /webhook
+                Method: POST

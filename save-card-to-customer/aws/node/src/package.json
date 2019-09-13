@@ -10,7 +10,7 @@
     "deploy:test": "aws cloudformation deploy --template-file output.yml --stack-name api-lambda-send-email-ses --capabilities CAPABILITY_IAM --parameter-overrides FromEmail=alexander.simovic@gmail.com"
   },
   "keywords": [],
-  "author": "Aleksandar Simovic <alexander.simovic@gmail.com>",
+  "author": "Adrienne Dreyfus <adreyfus@stripe.com>",
   "license": "MIT",
   "devDependencies": {
     "stripe": "^7.9.0"

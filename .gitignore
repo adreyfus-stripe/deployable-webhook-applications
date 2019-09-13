@@ -1,1 +1,6 @@
 .DS_Store
+node_modules
+output.yaml
+packaged.yaml
+publish.sh
+.aws-sam/
