@@ -1,12 +1,12 @@
-# Sending a Custom E-mail Receipt with AWS Lambda
+# Saving payment method to Customer
 
 ## Description
 
-This Lambda is a webhook handler that listens for a payment_intent.succeeded event and creates a custom e-mail receipt with the relevant params.
+This Lambda is a webhook handler that listens for a payment_intent.succeeded event and creates a new Stripe Customer to save the PaymentMethod data to.
 
 ## Deployment Parameters
 
-There are two environment variables required to send email:
+There are two environment variables required:
 
 - `STRIPE_WEBHOOK_SECRET`, a required parameter, the webhook endpoint secret from your Stripe webhook.
 - `STRIPE_SECRET_KEY`, a required parameter, your Stripe merchant secret API key.
